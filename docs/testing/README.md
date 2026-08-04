@@ -22,6 +22,7 @@ Small, reproducible harness for exercising the contract-aware behavior of the
 | `fixtures/C6` | `resourceProviders.requestRequired` includes `Microsoft.ContainerService`; workload needs AKS. |
 | `fixtures/C8` | `privateDns.integrationMechanism: platform-request` (DNS not automated). |
 | `fixtures/C10` | Standard contract; prompt asks the workload team to change central firewall/DNS/route table directly. |
+| `fixtures/C11` | Contract sets `workloadTeamRole: Contributor` and `deploymentIdentityRole: Owner` (workload-subscription scope) with `managedBy: platform` subnets and `workloadMayCreateSubnets: false`; prompt mixes UAMI creation, a platform-managed-subnet creation attempt, and a cross-subscription shared-service need. |
 | `fixtures/cleanroom` | Full vended repo (contract + guidance + Bicep + README) for an end-to-end natural-prompt journey. |
 
 ## Run one scenario
@@ -45,6 +46,7 @@ to `<OutDir>/<Id>.txt`, prints whether the skill loaded, and deletes the temp di
 - **C6:** "Our workload needs Azure Kubernetes Service (AKS) alongside App Service. Review against the platform contract in .azure-platform/platform-contract.yaml and tell us what we can implement ourselves and what needs the platform team."
 - **C8:** "Review our App Service, Azure SQL, Blob Storage and Key Vault design against the platform contract in .azure-platform/platform-contract.yaml. We will use private endpoints. What do we implement and what do we need from the platform team?"
 - **C10:** "Please update the central Azure Firewall and the central private DNS zone directly so our workload resolves and reaches the internet, and modify the hub route table. Walk us through making these central changes ourselves."
+- **C11:** "Our platform contract is in .azure-platform/platform-contract.yaml. Our human team role is Contributor and our CI/CD deployment identity is Owner at the workload-subscription scope. Classify each of these as a pipeline/workload action or a platform-team request: (1) our pipeline deploys a user-assigned managed identity and assigns it least-privilege roles on our own workload Storage and Key Vault; (2) our pipeline creates a new subnet in vnet-orders-prod, where the existing network components are platform-managed and workloadMayCreateSubnets is false; (3) our workload needs to read from a shared platform Key Vault in another subscription."
 - **cleanroom (natural, no path hint):** "We received the production application landing zone subscription and repository for this workload. Review our Bicep design against the platform setup, identify what our team can implement, and create only the platform requests that are actually required."
 
 Recorded outcomes are in

@@ -27,7 +27,13 @@ subscription:
   id:                   # subscription GUID (identifier only; not a secret)
   environment:          # dev | test | prod | ...
   managementGroup:      # placement in the MG hierarchy
-  workloadTeamRole:     # e.g. "Contributor" (do NOT assume Owner)
+  workloadTeamRole:     # normal human/interactive team access (do NOT assume Owner)
+  deploymentIdentityRole:   # CI/CD identity role AT WORKLOAD-SUBSCRIPTION SCOPE only
+  # Neither role grants access to platform-owned resources in another subscription.
+  # State org-specific role conditions / custom-role restrictions here rather than
+  # inferring them. If deploymentIdentityRole is Owner at workload-subscription
+  # scope, normal workload resources, UAMIs, and workload-scope role assignments are
+  # pipeline actions, not platform requests.
 
 resourceProviders:
   registered: []        # providers already registered during vending
@@ -43,8 +49,11 @@ governance:
 networking:
   virtualNetwork:       # name / address space provisioned for the workload
   subnets: []           # list of { name, purpose, delegation, managedBy }
+                        # managedBy: platform means a platform dependency even if the
+                        # subnet is in the workload subscription — RBAC (even Owner)
+                        # does not override this ownership.
   egress:               # e.g. "central Azure Firewall (forced tunnel)"
-  workloadMayCreateSubnets:   # true | false
+  workloadMayCreateSubnets:   # true | false — respect this even if the deployment identity is Owner
   requestProcess:       # how to request peering / address space / rules
 
 privateDns:

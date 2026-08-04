@@ -68,8 +68,16 @@ zones; central egress; central workspace; allowed EU regions; required tags.
 | Dependency | Required? | Request |
 |---|---|---|
 | Firewall egress to `api.payments.example` (443/TCP) | Yes | [`platform-team-requests/firewall-egress-rule.md`](platform-team-requests/firewall-egress-rule.md) |
-| Private DNS integration | No — automated by policy | (illustrative: [`platform-team-requests/private-dns-integration.md`](platform-team-requests/private-dns-integration.md)) |
-| Cross-subscription shared-service role | No — not needed here | (illustrative: [`platform-team-requests/shared-service-role-assignment.md`](platform-team-requests/shared-service-role-assignment.md)) |
+
+Private DNS integration is **not** a dependency here — it is automated by Azure
+Policy (`policy-dine`) for the required zones. Resource providers are already
+registered and both subnets are provisioned, so none of those are requests either.
+
+Alternative illustrative platform requests (not required by Contoso Orders, shown
+to demonstrate other dependency types):
+
+- [`platform-team-requests/shared-service-private-endpoint-approval.md`](platform-team-requests/shared-service-private-endpoint-approval.md)
+- [`platform-team-requests/network-address-space-expansion.md`](platform-team-requests/network-address-space-expansion.md)
 
 **Shared decisions:** deployment sequencing and connectivity testing with the platform team.
 

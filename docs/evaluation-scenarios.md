@@ -67,6 +67,16 @@ fictional `examples/subscription-vending-workflow/` contract as input.
 10. **Forbidden central change** — the workload asks for a central-platform change
     the contract forbids; the skill refuses to make it and routes it as a platform
     request instead.
+11. **Human vs deployment identity** — the contract sets `workloadTeamRole:
+    Contributor` and `deploymentIdentityRole: Owner` (workload-subscription scope).
+    Three cases: (1) deploying a UAMI and assigning least-privilege roles on
+    workload-owned resources are pipeline actions; (2) creating a subnet in
+    `vnet-orders-prod`, where the existing network components are platform-managed
+    (`managedBy: platform`) and `workloadMayCreateSubnets: false`, is a **platform
+    request despite Owner**; (3) access to a platform-owned resource in another
+    subscription is a platform request. The skill must show that Owner does not turn
+    platform-owned resources into workload-owned ones, respects the contract
+    boundary, and infers no central/cross-subscription permission.
 
 ## Contract-aware behavioral assertions
 

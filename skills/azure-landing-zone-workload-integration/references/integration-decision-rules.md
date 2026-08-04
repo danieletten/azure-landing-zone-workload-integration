@@ -46,6 +46,26 @@ is not a full Well-Architected review.
 - Grant the least-privilege built-in role at the narrowest scope. The workload
   team assigns roles on its **own** resources; access to shared platform services
   is requested, not self-granted. No management-group or tenant-scope grants.
+- Distinguish the **human** team role (`subscription.workloadTeamRole`) from the
+  **CI/CD deployment identity** (`subscription.deploymentIdentityRole`). When the
+  contract states the deployment identity is Owner at **workload-subscription
+  scope**, creating workload resources and UAMIs and assigning workload-scope roles
+  are **pipeline actions, not platform requests**. Neither role grants access to
+  platform-owned resources in another subscription — cross-subscription and central
+  changes remain platform requests. Do not infer central or cross-subscription
+  permissions from workload-subscription Owner, and do not universally assume Owner
+  when the contract does not state it.
+
+### Permission vs ownership
+- RBAC determines what a deployment identity can **technically perform**; the
+  platform **contract** determines **responsibility and authorization**. They are
+  not the same. `deploymentIdentityRole: Owner` does not override explicit platform
+  ownership.
+- A resource marked `managedBy: platform` remains a **platform dependency** even when
+  it sits in the workload subscription. A contract value such as
+  `workloadMayCreateSubnets: false` must be respected even when the deployment
+  identity technically has Owner. Do not instruct the workload pipeline to create or
+  modify such resources — raise a platform request instead.
 
 ### Secrets, keys, certificates
 - Store secrets in Key Vault (platform or workload per contract). Note CMK
@@ -81,13 +101,15 @@ is not a full Well-Architected review.
 
 ## Reviewing workload IaC
 
-Flag platform-incompatible assumptions: subscription Owner access; creating role
+Flag platform-incompatible assumptions: assuming human or deployment-identity Owner
+access when the platform contract does not explicitly grant it; creating role
 assignments outside own resources; creating/modifying VNets; modifying central
 private DNS zones, firewall rules, or route tables; relying on public network
 access; owning management-group or policy assignments; duplicating central services
 inside the workload subscription; omitting required diagnostic settings or tags; and
 hard-coded enterprise configuration that should be an input or platform-contract
-value.
+value. (Even explicitly granted deployment Owner does not override `managedBy:
+platform` or `workloadMayCreateSubnets: false` — see Permission vs ownership above.)
 
 Do not rewrite all infrastructure unless the user requests implementation. Prefer
 Bicep and Azure Verified Modules in new Azure-only examples; stay usable for
