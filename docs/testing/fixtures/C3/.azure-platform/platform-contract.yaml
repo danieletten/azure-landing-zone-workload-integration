@@ -1,0 +1,39 @@
+apiVersion: workload-integration/v1
+kind: PlatformContract
+metadata:
+  contractVersion: "1.4.0"
+  generatedAt: "2026-08-04T09:00:00Z"
+  sourceRepository: "https://github.com/contoso-example/platform-landing-zone"
+  sourceRevision: "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0"
+  productLine: corp-connected-online
+  platformOwner: Cloud Platform Team
+  supportChannel: platform-requests@contoso.example
+subscription:
+  name: sub-contoso-orders-prod
+  id: "00000000-0000-0000-0000-000000000000"
+  environment: prod
+  managementGroup: mg-corp-online
+  workloadTeamRole: Contributor
+networking:
+  virtualNetwork: vnet-orders-prod
+  subnets:
+    - name: snet-appservice-integration
+      purpose: "App Service regional VNet Integration (outbound)."
+      delegation: Microsoft.Web/serverFarms
+      managedBy: platform
+    - name: snet-private-endpoints
+      purpose: "Private endpoints."
+      delegation: none
+      managedBy: platform
+  egress: "Central Azure Firewall (forced tunnel). Workload-owned standalone egress is not permitted."
+  workloadMayCreateSubnets: false
+  requestProcess: "Peering, address space, and firewall rules via platform queue."
+governance:
+  allowedRegions: [westeurope, northeurope]
+  requiredTags: [costCenter, owner, dataClassification]
+  inheritedPolicyOutcomes:
+    - "Deny: public network access for PaaS"
+privateDns:
+  integrationMechanism: policy-dine
+  centralZones: [privatelink.azurewebsites.net, privatelink.database.windows.net]
+  supportedServices: [App Service, Azure SQL]

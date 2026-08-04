@@ -99,3 +99,9 @@ current working-tree skill, using the fictional
 Not yet executed (documented for future runs; do not assume passing): C3 (drift),
 C4 (stale/no provenance), C6 (provider request required), C8 (DNS request required),
 C10 (forbidden central change).
+
+**Update (2026-08-04, skill `0.2.0-dev`):** C3, C4, C6, C8, C10 and a clean-room
+end-to-end journey were subsequently executed and **all passed** — see
+[evaluation-results-v0.2-dev.md](evaluation-results-v0.2-dev.md) and the reproducible
+harness in [testing/README.md](testing/README.md). No contract-aware scenarios
+remain unexecuted.

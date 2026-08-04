@@ -1,0 +1,46 @@
+apiVersion: workload-integration/v1
+kind: PlatformContract
+metadata:
+  contractVersion: "1.5.0"
+  generatedAt: "2026-08-04T09:00:00Z"
+  sourceRepository: "https://github.com/contoso-example/platform-landing-zone"
+  sourceRevision: "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1"
+  productLine: corp-connected-online
+  platformOwner: Cloud Platform Team
+  supportChannel: platform-requests@contoso.example
+subscription:
+  name: sub-contoso-orders-prod
+  id: "00000000-0000-0000-0000-000000000000"
+  environment: prod
+  managementGroup: mg-corp-online
+  workloadTeamRole: Contributor
+resourceProviders:
+  registered: [Microsoft.Web, Microsoft.Sql, Microsoft.Storage, Microsoft.KeyVault, Microsoft.Network]
+networking:
+  virtualNetwork: vnet-orders-prod
+  subnets:
+    - name: snet-appservice-integration
+      purpose: "App Service regional VNet Integration (outbound)."
+      delegation: Microsoft.Web/serverFarms
+      managedBy: platform
+    - name: snet-private-endpoints
+      purpose: "Private endpoints."
+      delegation: none
+      managedBy: platform
+  egress: "Central Azure Firewall (forced tunnel)."
+privateDns:
+  # C8: DNS integration is NOT automated for this product line — the platform
+  # completes zone/record integration after a request.
+  integrationMechanism: platform-request
+  centralZones:
+    - privatelink.azurewebsites.net
+    - privatelink.database.windows.net
+    - privatelink.blob.core.windows.net
+    - privatelink.vaultcore.azure.net
+  supportedServices: [App Service, Azure SQL, Storage (blob), Key Vault]
+  requestProcess: "Submit a private DNS integration request via the platform queue."
+governance:
+  allowedRegions: [westeurope, northeurope]
+  requiredTags: [costCenter, owner, dataClassification]
+  inheritedPolicyOutcomes:
+    - "Deny: public network access for PaaS"

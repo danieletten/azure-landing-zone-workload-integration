@@ -42,6 +42,12 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Added a "Platform-team customization and subscription vending" section to the README.
 - Marked `main` as development toward the next release: skill `metadata.version` is
   now `0.2.0-dev` (the `v0.1.0` tag and release remain at `0.1.0`).
+- Validated the platform-contract workflow with genuine Copilot CLI runs: contract
+  vs IaC conflict (C3), stale/unprovenanced contract (C4), provider request required
+  (C6), private DNS request required (C8), forbidden central change (C10), and a
+  clean-room end-to-end journey — all passed (6/6). Added a reproducible test harness
+  and fictional fixtures under `docs/testing/` and results in
+  `docs/evaluation-results-v0.2-dev.md`. No skill behavior changes were required.
 
 ## [0.1.0] - 2026-08-04
 
