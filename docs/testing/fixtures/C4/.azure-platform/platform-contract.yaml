@@ -1,0 +1,26 @@
+apiVersion: workload-integration/v1
+kind: PlatformContract
+metadata:
+  # C4: stale / unprovenanced contract — no contractVersion, no sourceRevision,
+  # and an old generation timestamp.
+  generatedAt: "2024-01-15T08:00:00Z"
+  productLine: corp-connected-online
+  platformOwner: Cloud Platform Team
+  supportChannel: platform-requests@contoso.example
+subscription:
+  name: sub-contoso-orders-prod
+  id: "00000000-0000-0000-0000-000000000000"
+  environment: prod
+  managementGroup: mg-corp-online
+  workloadTeamRole: Contributor
+governance:
+  allowedRegions: [westeurope, northeurope]
+  requiredTags: [costCenter, owner, dataClassification]
+  inheritedPolicyOutcomes:
+    - "Deny: public network access for PaaS"
+networking:
+  virtualNetwork: vnet-orders-prod
+  egress: "Central Azure Firewall (forced tunnel)."
+privateDns:
+  integrationMechanism: policy-dine
+  centralZones: [privatelink.azurewebsites.net]
