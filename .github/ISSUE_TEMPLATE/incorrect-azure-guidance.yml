@@ -1,0 +1,30 @@
+name: Incorrect Azure guidance
+description: The skill produced inaccurate or unsafe Azure guidance.
+title: "[guidance]: "
+labels: ["azure-guidance"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please **exclude** confidential information, subscription IDs, internal IP ranges, and secrets.
+  - type: textarea
+    id: guidance
+    attributes:
+      label: Guidance produced
+      description: What the skill recommended (sanitized).
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+      description: Why it is inaccurate, unsafe, or non-compliant.
+    validations:
+      required: true
+  - type: textarea
+    id: correct
+    attributes:
+      label: Correct guidance and source
+      description: The correct guidance, ideally with an official Microsoft Learn link.
+    validations:
+      required: true

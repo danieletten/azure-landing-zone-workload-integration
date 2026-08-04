@@ -1,0 +1,27 @@
+name: New workload integration scenario
+description: Suggest a workload integration scenario the skill should handle.
+title: "[scenario]: "
+labels: ["scenario"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please **exclude** confidential information, subscription IDs, internal IP ranges, and secrets.
+  - type: textarea
+    id: scenario
+    attributes:
+      label: Scenario
+      description: The workload integration situation (fictional/sanitized).
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected outputs
+      description: Workload actions, platform requests, and readiness the skill should produce.
+    validations:
+      required: true
+  - type: textarea
+    id: not-assume
+    attributes:
+      label: What the skill must not assume

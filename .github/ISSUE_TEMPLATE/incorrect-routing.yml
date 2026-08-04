@@ -1,0 +1,37 @@
+name: Incorrect routing
+description: The skill loaded when it should not have, or did not load when it should have.
+title: "[routing]: "
+labels: ["routing"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please **exclude** confidential information, subscription IDs, internal IP ranges, and secrets.
+  - type: textarea
+    id: prompt
+    attributes:
+      label: Prompt used
+      description: The prompt (sanitized) that produced the wrong routing.
+    validations:
+      required: true
+  - type: dropdown
+    id: direction
+    attributes:
+      label: What happened
+      options:
+        - Skill loaded but should NOT have
+        - Skill did NOT load but should have
+    validations:
+      required: true
+  - type: input
+    id: expected
+    attributes:
+      label: Expected skill / behavior
+      description: Which skill should have handled this (e.g. azure-app-onboard, azure-enterprise-infra-planner)?
+    validations:
+      required: true
+  - type: input
+    id: host
+    attributes:
+      label: Host and model
+      description: e.g. Copilot CLI, model name.

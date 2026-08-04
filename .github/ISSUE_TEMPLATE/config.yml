@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Community project disclaimer
+    url: https://github.com/danieletten/azure-landing-zone-workload-integration/blob/main/README.md
+    about: This is an independent community project, not an official Microsoft or GitHub product. Do not include confidential information, subscription identifiers, internal IP ranges, or secrets in issues.

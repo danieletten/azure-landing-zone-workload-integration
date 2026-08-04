@@ -65,7 +65,7 @@ Upstream requires **routing tests** and **end-to-end integration tests** per ski
 authored with the `vally-eval` skill and hooked into the nightly integration
 system. Manual testing uses `copilot --plugin-dir ./output/<plugin>` and
 `/skills reload`. The routing/behavioral scenarios in
-[evaluation-scenarios.md](evaluation-scenarios.md) are the basis for those Vally
+[../evaluation-scenarios.md](../evaluation-scenarios.md) are the basis for those Vally
 suites; they are **not** a substitute for the upstream eval format.
 
 ## Token limits (verified 2026-08-04)

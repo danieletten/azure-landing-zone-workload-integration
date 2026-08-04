@@ -2,7 +2,7 @@
 
 Human-readable routing and behavioral scenarios. These are the **basis for future
 upstream Vally suites** (routing + end-to-end), not a substitute for the upstream
-eval format. See [upstream-contribution.md](upstream-contribution.md).
+eval format. See [upstream/contribution.md](upstream/contribution.md).
 
 ## Positive trigger scenarios (should load this skill)
 

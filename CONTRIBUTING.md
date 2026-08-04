@@ -42,7 +42,7 @@ stays contribution-ready:
 - Keep a small number of focused references; link to files, not folders.
 - Do not add a `README.md` inside the skill directory (upstream skills do not).
 
-See [`docs/upstream-contribution.md`](docs/upstream-contribution.md) for the full
+See [`docs/upstream/contribution.md`](docs/upstream/contribution.md) for the full
 upstream path, including Vally evaluation requirements.
 
 ## Validate before opening a pull request

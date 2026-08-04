@@ -71,14 +71,14 @@ exemptions; produce workload actions and precise platform team requests.
 - Community repository validation (link check, frontmatter name/dir match, token
   counts) passes.
 - Routing and behavioral scenarios documented in
-  [evaluation-scenarios.md](evaluation-scenarios.md), ready to be implemented as
+  [../evaluation-scenarios.md](../evaluation-scenarios.md), ready to be implemented as
   upstream Vally routing + e2e suites.
 - **TODO:** author and run Vally suites in the upstream harness before opening the
   PR (not reproducible in this standalone repo).
 
 ## Microsoft documentation sources used
 
-See [../skills/azure-landing-zone-workload-integration/references/official-source-map.md](../skills/azure-landing-zone-workload-integration/references/official-source-map.md).
+See [../../skills/azure-landing-zone-workload-integration/references/official-source-map.md](../../skills/azure-landing-zone-workload-integration/references/official-source-map.md).
 Key pages: CAF Azure landing zones and design principles, Private Link & DNS
 integration at scale, Azure Policy effects and exemptions, managed identities and
 RBAC, reliability/availability zones, and reliability & sovereignty.

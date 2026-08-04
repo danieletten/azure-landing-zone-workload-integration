@@ -1,0 +1,35 @@
+name: Responsibility feedback
+description: Feedback on how the skill splits workload-team vs platform-team responsibilities.
+title: "[responsibility]: "
+labels: ["responsibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please **exclude** confidential information, subscription IDs, internal IP ranges, and secrets.
+        Organization responsibility models differ — describe the general pattern, not internal specifics.
+  - type: textarea
+    id: capability
+    attributes:
+      label: Capability in question
+      description: The capability whose ownership seems mis-classified (e.g. private DNS records, role assignment).
+    validations:
+      required: true
+  - type: dropdown
+    id: classified
+    attributes:
+      label: Skill classified it as
+      options:
+        - Workload-team responsibility
+        - Platform-team responsibility
+        - Shared responsibility
+        - Architecture decision required
+        - Not addressed
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected classification and why
+    validations:
+      required: true

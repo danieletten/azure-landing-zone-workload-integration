@@ -1,0 +1,20 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Python (validation script)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node (if upstream tooling is used locally)
+node_modules/
+output/
+
+# Local scratch
+*.log
+tmp/

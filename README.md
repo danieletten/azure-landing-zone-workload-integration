@@ -1,84 +1,102 @@
 # Azure Landing Zone Workload Integration
 
-A reusable [Agent Skill](https://agentskills.io/specification) that helps an
-**application or workload team** integrate a new or existing workload into an
-**existing** enterprise Azure Landing Zone.
+Help workload teams integrate Azure workloads into an existing enterprise Azure
+Landing Zone while respecting platform guardrails and clearly separating workload
+and platform responsibilities.
 
-> **Status: early development. Community project.** This is **not** an official
-> Microsoft or GitHub product. Always reconcile every recommendation with your
-> own organization's Azure platform standards, which take precedence.
->
-> The intended long-term destination is consideration for the official Microsoft
-> Azure Skills Plugin (`microsoft/azure-skills`, developed in
-> `microsoft/GitHub-Copilot-for-Azure`). Acceptance is not implied or guaranteed.
+> Community project — **not** an official Microsoft or GitHub product. All guidance
+> is generic and must be validated against your organization's Azure platform
+> standards. Public preview (`v0.1.0`, in development).
 
-## The problem this repository solves
+## The problem
 
-In enterprise-scale Azure Landing Zones the platform — management groups,
+In enterprise-scale Azure Landing Zones, the platform — management groups,
 connectivity/hub, identity, and centralized governance — already exists and is
-owned by a platform team. A workload team given a subscription still has to
-integrate correctly: consume central networking, DNS, identity, and monitoring;
-comply with inherited Azure Policy and guardrails; and know when to raise a
-platform team request. This skill encodes that workload-team integration workflow.
+owned by a platform team. A workload team handed a vended subscription still has
+to integrate correctly: consume central networking, DNS, identity, and
+monitoring; comply with inherited Azure Policy and guardrails; and know which
+changes it can make itself versus which need a platform team request. Deployments
+stall on policy denials and platform dependencies, and responsibility boundaries
+are unclear. This skill provides a repeatable integration workflow for that gap.
 
-## The workload team perspective
+## Who it is for
 
-This skill deliberately takes the **workload team's** point of view. It helps you
-fit a workload into an existing platform. It does **not** design or deploy the
-platform itself.
+Application developers, workload architects, DevOps and platform consumers,
+workload owners, and security/governance contacts working **with** a workload
+team. It is not written for the team that builds and owns the central landing
+zone.
 
-## Two important distinctions
+## What it produces
 
-**Application onboarding vs landing zone integration.** Choosing Azure services
-for an app idea or codebase and deploying it is *application onboarding*
-(`azure-app-onboard`). Fitting a workload into an existing landing zone's
-platform contract is *landing zone integration* (this skill).
+A structured integration assessment with clearly separated:
 
-**Platform design vs workload integration.** Designing the platform, management
-groups, hub network, and governance is *platform design*
-(`azure-enterprise-infra-planner`). Consuming that platform as a workload team,
-compliantly, is *workload integration* (this skill).
+- Confirmed platform context and explicit assumptions.
+- **Workload-team actions** (what you can do yourself, compliantly).
+- **Platform-team requests** (precise, one per dependency).
+- Shared decisions and architecture decisions required.
+- Policy conflicts with compliant remediation options (exemptions last).
+- A readiness status.
 
-| Owned centrally by the platform team | Owned by the workload team |
-| --- | --- |
-| Management groups and central Azure Policy | Application resources in the workload subscription |
-| Hub networking, egress/firewall, central private DNS zones | Workload subnets, private endpoints, workload IaC |
-| Identity platform (tenant, PIM, Conditional Access) | Workload managed identities and RBAC on workload resources |
-| Central logging (Log Analytics, Defender, Sentinel) | Workload telemetry, alerts, incident ownership |
-| Subscription vending | Workload cost ownership and tagging |
+## A concise example
 
-## Current skill
+> "We have a vended subscription in our landing zone. I need to deploy an App
+> Service + Azure SQL + Storage + Key Vault app. Central policy denies public
+> access, DNS and egress are centralized. What's ours vs the platform team's?"
 
-### `azure-landing-zone-workload-integration`
+The skill discovers the platform contract, separates responsibilities, and
+returns workload actions (private endpoints, `publicNetworkAccess` disabled,
+managed identity, diagnostics/tags) alongside platform requests (private DNS
+records, a firewall rule, subnet delegation) with a readiness status — without
+assuming Owner rights or enabling public access. See the full worked example in
+[`examples/app-service-platform-integration.md`](examples/app-service-platform-integration.md).
 
-Establishes workload context, discovers the platform contract, splits
-responsibilities, assesses relevant integration domains, reviews workload IaC,
-investigates policy/platform blockers (preferring compliant remediation over
-exemptions), and produces clear workload actions plus precise platform team
-requests. See
-[`skills/azure-landing-zone-workload-integration/SKILL.md`](skills/azure-landing-zone-workload-integration/SKILL.md).
+## Quick start
 
-## Installation and usage (standalone)
+1. Install the GitHub CLI skills preview (see [Installation](#installation)).
+2. Preview the skill:
+   ```bash
+   gh skill preview danieletten/azure-landing-zone-workload-integration azure-landing-zone-workload-integration
+   ```
+3. Install it, then ask your agent to integrate your workload into your landing
+   zone (see [Example prompts](#example-prompts)).
 
-The skill is a self-contained folder. Make it available to your agent using your
-current supported skill mechanism, for example:
+## Installation
 
-- Copy `skills/azure-landing-zone-workload-integration/` into your local skills
-  directory, or
-- Reference the folder directly in your prompt/session.
+`gh skill` is in **public preview** and requires a recent GitHub CLI (the skills
+commands were introduced around **v2.90.0**; verified working on **v2.96.0**). Run
+`gh --version` to check, and `gh skill --help` to confirm the commands are
+available.
 
-> The exact `gh skills` / Copilot CLI command and minimum versions depend on your
-> environment. **TODO:** confirm the supported install command for this repository
-> against your tooling before documenting it as canonical.
-
-Once distributed via the Azure Skills Plugin, the upstream install path would be
-(illustrative, verify at that time):
+**Install the latest version:**
 
 ```bash
-# Copilot CLI
-/plugin marketplace add microsoft/azure-skills
-/plugin install azure@azure-skills
+gh skill install danieletten/azure-landing-zone-workload-integration azure-landing-zone-workload-integration
 ```
+
+**Install a tagged release:**
+
+```bash
+gh skill install danieletten/azure-landing-zone-workload-integration azure-landing-zone-workload-integration@v0.1.0
+```
+
+By default `gh skill` installs at **project scope** for GitHub Copilot. Use
+`--scope user` to install everywhere, or `--agent <name>` for another supported
+agent (see `gh skill install --help`).
+
+**Manual fallback (copy the folder):** clone this repository and either install
+from local —
+
+```bash
+gh skill install . azure-landing-zone-workload-integration --from-local
+```
+
+— or copy the self-contained skill folder
+`skills/azure-landing-zone-workload-integration/` into your agent's project skills
+directory (the GitHub CLI uses `.agents/skills/` for project-scope installs). Use
+`gh skill install --dir <path>` to target a custom directory.
+
+Only use install commands you can verify with `gh skill --help` on your machine;
+command syntax may change while the feature is in preview.
 
 ## Example prompts
 
@@ -89,28 +107,60 @@ Once distributed via the Azure Skills Plugin, the upstream install path would be
 - "Which responsibilities are ours vs the platform team for this workload?"
 - "Does this design meet EU data residency requirements inside the landing zone?"
 
-## Testing this skill
+## When to use the skill
 
-Human-readable routing and behavioral scenarios are in
-[`docs/evaluation-scenarios.md`](docs/evaluation-scenarios.md). Run repository
-validation before contributing:
+- An Azure Landing Zone or application landing zone already exists and a workload
+  must integrate with its inherited policy, central networking, DNS, identity,
+  monitoring, security, cost controls, and sovereignty requirements.
+- A deployment is blocked by inherited Azure Policy or a platform dependency.
+- You need to separate workload-team and platform-team responsibilities.
 
-```bash
-python .github/scripts/validate_skills.py
-```
+## When not to use the skill
 
-## Upstream contribution
+| Scenario | Use instead |
+|---|---|
+| Choosing Azure services from an app idea or codebase | `azure-app-onboard` |
+| Designing the platform, landing zone, hub network, or governance | `azure-enterprise-infra-planner` |
+| Generating IaC for a known architecture | `azure-prepare` |
+| Preflight / infrastructure validation | `azure-validate` |
+| Executing a ready deployment | `azure-deploy` |
 
-This skill is structured to be copied into the upstream repository with only
-relative links. See:
+## Supported operating modes
 
-- [`docs/upstream-fit-gap.md`](docs/upstream-fit-gap.md) — problem, audience, and gap vs existing skills.
-- [`docs/upstream-contribution.md`](docs/upstream-contribution.md) — verified contribution path, build/validation/token rules.
-- [`docs/upstream-pr-draft.md`](docs/upstream-pr-draft.md) — draft PR narrative (not submitted).
+- **Assessment (default):** analyzes the workload and platform context and returns
+  the structured output above. Makes no changes to any Azure resource.
+- **Read-only discovery (opt-in):** only with your explicit permission, uses
+  read-only Azure queries to discover platform context. Never writes.
+- **Implementation (explicit request only):** may propose or edit workload IaC
+  when you ask for implementation. It never modifies central platform resources
+  and never deploys without explicit authorization.
 
-## Contributing
+## Current limitations
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+- Recommendations are generic; they cannot know your organization's private
+  standards (allowed regions, tags, DNS zones, policy set) unless you supply them.
+- It does not design or deploy the platform, and cannot make central-platform
+  changes — it produces requests for the platform team instead.
+- It relies on the platform context you provide or permit it to discover; gaps are
+  reported as assumptions/`TODO`, not guessed.
+- Not a legal or compliance authority; sovereignty output flags decisions for your
+  platform and legal contacts.
+
+## Evaluation status
+
+Early. Routing and behavioral scenarios are defined in
+[`docs/evaluation-scenarios.md`](docs/evaluation-scenarios.md), and a manual
+evaluation log is in
+[`docs/evaluation-results-v0.1.md`](docs/evaluation-results-v0.1.md). Only
+scenarios genuinely executed are marked as run; the rest are pending.
+
+## Contributing and feedback
+
+Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) and
+the issue templates (routing, Azure guidance, new scenario, responsibility
+feedback, feature request). Please **exclude** confidential information,
+subscription identifiers, internal IP ranges, and secrets from reports. Run
+`python .github/scripts/validate_skills.py` before submitting.
 
 ## Roadmap
 
@@ -120,13 +170,19 @@ Focused, workload-team-oriented skills that may follow (not yet built):
 - `azure-landing-zone-workload-review` — review a workload for security, governance, reliability, cost, and sovereignty.
 - `azure-landing-zone-platform-request` — generate precise, reviewable platform team requests.
 
-## Repository naming note
+## Design compatibility
 
-The skill and local branding use `azure-landing-zone-workload-integration`. If the
-remote repository is still named for the earlier "onboarding" scope, renaming it
-to `azure-landing-zone-workload-integration` is recommended for clarity. That
-remote rename is a **manual** action and is intentionally not performed here.
+The skill follows the Agent Skills specification and the current conventions of
+the Microsoft Azure Skills development repository (frontmatter shape, token
+budgets, references layout), so the `skills/azure-landing-zone-workload-integration/`
+folder stays structurally suitable for possible future migration into the
+Microsoft Azure Skills Plugin. That is a secondary design constraint, not a
+commitment; acceptance is neither implied nor guaranteed. Details live under
+[`docs/upstream/`](docs/upstream/).
 
-## License
+## License and community disclaimer
 
-[MIT](LICENSE).
+Licensed under [MIT](LICENSE). This is an independent community project. It is not
+affiliated with, endorsed by, or supported by Microsoft or GitHub. "Azure" and
+related names are trademarks of their respective owners. Always align
+recommendations with your own Azure platform standards before acting.
