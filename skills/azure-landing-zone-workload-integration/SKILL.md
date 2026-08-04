@@ -4,7 +4,7 @@ description: "Integrate a workload into an existing enterprise Azure Landing Zon
 license: MIT
 metadata:
   author: Azure Landing Zone Workload Skills contributors
-  version: "0.0.0-placeholder"
+  version: "0.1.0"
 ---
 
 # Azure Landing Zone Workload Integration
