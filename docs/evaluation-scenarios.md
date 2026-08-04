@@ -69,11 +69,13 @@ fictional `examples/subscription-vending-workflow/` contract as input.
     request instead.
 11. **Human vs deployment identity** — the contract sets `workloadTeamRole:
     Contributor` and `deploymentIdentityRole: Owner` (workload-subscription scope).
-    Deploying a UAMI and assigning least-privilege roles on workload-owned resources
-    are pipeline actions (no platform request to create/configure the UAMI), while
-    access to a platform-owned resource in another subscription remains a platform
-    request. The skill must not infer central/cross-subscription permissions from
-    workload-subscription Owner.
+    Three cases: (1) deploying a UAMI and assigning least-privilege roles on
+    workload-owned resources are pipeline actions; (2) creating a subnet in a VNet
+    the contract marks `managedBy: platform` with `workloadMayCreateSubnets: false`
+    is a **platform request despite Owner**; (3) access to a platform-owned resource
+    in another subscription is a platform request. The skill must show that Owner
+    does not turn platform-owned resources into workload-owned ones, respects the
+    contract boundary, and infers no central/cross-subscription permission.
 
 ## Contract-aware behavioral assertions
 

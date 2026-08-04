@@ -12,12 +12,17 @@ Follows
 REQ-orders-subnet-002
 
 ## Requested capability or change
-Allocate one additional subnet in the platform-managed VNet `vnet-orders-prod` for a
-newly approved workload component. The platform team allocates the address range and
-creates the subnet; the workload does not modify the VNet.
+Allocate one additional subnet in the platform-managed VNet `vnet-orders-prod`,
+**dedicated exclusively to an Azure Container Apps workload profiles environment**.
+The platform team allocates the address range and creates the subnet; the workload
+does not modify the VNet.
 
-- Required minimum subnet size: **/27** (accommodates the component plus growth headroom)
-- Intended service / delegation: dedicated subnet for Azure Container Apps environment infrastructure (delegation per the platform's approved pattern, if applicable)
+- Intended component: **Azure Container Apps workload profiles environment**
+- Required minimum subnet size: **/27** (the technical minimum for a workload
+  profiles environment; the platform team may allocate a larger subnet based on
+  scale, rollout, and growth requirements)
+- Required delegation: `Microsoft.App/environments`
+- Dedicated use: the subnet is used **exclusively** by the Container Apps environment
 - Environment: prod
 - Existing VNet: `vnet-orders-prod`
 
@@ -25,13 +30,14 @@ creates the subnet; the workload does not modify the VNet.
 > non-overlapping range via central IPAM. The request states size and purpose.
 
 ## Business context
-A newly approved Contoso Orders component (async processing) requires its own subnet;
-the existing App Service integration and private-endpoint subnets are purpose-bound
-and cannot host it.
+A newly approved Contoso Orders component (async processing on Azure Container Apps)
+requires its own environment subnet; the existing App Service integration and
+private-endpoint subnets are purpose-bound and cannot host it.
 
 ## Technical justification
-Existing subnets are already delegated/purposed (App Service integration; private
-endpoints) and cannot be reused for a different service. The contract sets
+A Container Apps workload profiles environment requires its own subnet delegated to
+`Microsoft.App/environments`. Existing subnets are already delegated/purposed (App
+Service integration; private endpoints) and cannot be reused. The contract sets
 `workloadMayCreateSubnets: false`, and address allocation must avoid overlap with the
 hub and other spokes.
 
@@ -52,8 +58,10 @@ Central IPAM, VNet address space, routing, and non-overlap validation.
 
 ## Security and compliance implications
 The new subnet must inherit the required route table (central firewall egress) and
-NSG baseline, and must not create a bypass of central egress. Consider effects on
-routing, firewalling, NSGs, and any private endpoints placed there.
+NSG baseline, and must not create a bypass of central egress. It is delegated to
+`Microsoft.App/environments` and used only by the Container Apps environment; private
+endpoints are **not** placed in this infrastructure subnet — they belong in the
+dedicated `snet-private-endpoints` subnet.
 
 ## Why the workload pipeline must not modify the platform-owned VNet directly
 The VNet and its address space are platform-managed; direct edits risk overlap,
@@ -71,10 +79,14 @@ Before the async component enters integration testing.
 T. Lead, Contoso Orders.
 
 ## Validation and acceptance criteria
-- A new non-overlapping subnet of at least /27 exists in `vnet-orders-prod`.
-- It has the required route-table association (central egress) and NSG baseline.
-- The workload can deploy the component into it; private endpoints (if any) resolve.
-- No overlap with hub or other spokes is introduced.
+- The Azure Container Apps workload profiles environment can be deployed successfully.
+- The subnet is delegated to `Microsoft.App/environments`.
+- The subnet is used exclusively by the Container Apps environment.
+- Required routes and NSG controls are applied.
+- Outbound traffic follows the contracted central egress path.
+- Workloads in the environment can resolve and reach services through private
+  endpoints located in the dedicated `snet-private-endpoints` subnet.
+- No overlapping address space is introduced.
 
 ## Rollback or deallocation
 If the component is cancelled, the platform team deallocates the subnet and returns

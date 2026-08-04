@@ -63,6 +63,16 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   assignments are pipeline actions (not platform requests), while cross-subscription
   and central changes remain platform requests. Added targeted evaluation C11
   (executed 2026-08-04, **Pass**).
+- Pre-`v0.2.0` technical clarifications: qualified the shared-service private endpoint
+  approval example (manual approval is needed only because the deployment identity has
+  no RBAC on the platform-owned target — connections can auto-approve otherwise);
+  sharpened the network address-space example to an Azure Container Apps **workload
+  profiles environment** subnet (`/27` minimum, delegated to `Microsoft.App/environments`,
+  dedicated, with no private endpoints in the infrastructure subnet); and added a
+  permission-vs-ownership decision rule (RBAC ≠ authorization; `deploymentIdentityRole:
+  Owner` does not override `managedBy: platform` or `workloadMayCreateSubnets: false`).
+  Extended and re-ran C11 to cover the platform-managed-subnet case (three cases,
+  **Pass**).
 
 ## [0.1.0] - 2026-08-04
 

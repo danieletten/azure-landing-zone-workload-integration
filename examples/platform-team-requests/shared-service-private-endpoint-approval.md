@@ -30,9 +30,18 @@ Contoso Orders pulls base images from the organization's shared container regist
 which is centrally managed by the platform team.
 
 ## Technical justification
-The registry is in a different, platform-owned subscription. The workload can create
-the private endpoint on its side, but a private endpoint connection to another
-subscription's resource stays in `Pending` until the resource owner approves it.
+The registry is in a different, platform-owned subscription, and the workload
+deployment identity has **no RBAC permissions on the target registry**. The workload
+can create the private endpoint on its own side, but because it lacks approval
+permission on the registry, the connection stays in `Pending` until a principal with
+the required approval permission on `acrsharedplatform` approves it.
+
+> This is scenario-specific, **not** a universal rule. A cross-subscription private
+> endpoint connection can be **auto-approved** when the requesting principal already
+> has sufficient permissions on the target resource (e.g.
+> `Microsoft.Network/privateEndpointConnections` approve rights), or when the
+> target's approval configuration permits it. A manual request is needed here only
+> because the deployment identity has no rights on the platform-owned registry.
 
 ## Existing automated path checked
 Confirmed: **Private DNS integration is already automated** by Azure Policy
@@ -60,8 +69,9 @@ Public registry access or a workload-local copy of images — rejected (public a
 is denied by policy; a local copy defeats central image governance).
 
 ## Why workload-side remediation is insufficient
-The connection must be approved on the target resource, which the workload team does
-not own and cannot modify.
+Approving the connection requires approval permission on the target registry, which
+the workload deployment identity does not hold (the registry is platform-owned in
+another subscription). The workload cannot grant itself that permission.
 
 ## Requested completion or dependency date
 Before the first production image pull.

@@ -22,6 +22,10 @@ needed source cannot be verified.
 - Enable/configure VNet integration: https://learn.microsoft.com/azure/app-service/configure-vnet-integration-enable
 - App Service private endpoint (inbound): https://learn.microsoft.com/azure/app-service/overview-private-endpoint
 
+## Container Apps networking
+- Container Apps VNet configuration (workload profiles environment subnet: `/27` or larger, delegated to `Microsoft.App/environments`): https://learn.microsoft.com/azure/container-apps/networking
+- Provide a virtual network to a Container Apps environment: https://learn.microsoft.com/azure/container-apps/vnet-custom
+
 ## Subscription vending
 - Subscription vending (design area): https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-area/subscription-vending
 - Subscription vending product lines: https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-area/subscription-vending-product-lines

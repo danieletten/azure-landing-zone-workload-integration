@@ -56,6 +56,17 @@ is not a full Well-Architected review.
   permissions from workload-subscription Owner, and do not universally assume Owner
   when the contract does not state it.
 
+### Permission vs ownership
+- RBAC determines what a deployment identity can **technically perform**; the
+  platform **contract** determines **responsibility and authorization**. They are
+  not the same. `deploymentIdentityRole: Owner` does not override explicit platform
+  ownership.
+- A resource marked `managedBy: platform` remains a **platform dependency** even when
+  it sits in the workload subscription. A contract value such as
+  `workloadMayCreateSubnets: false` must be respected even when the deployment
+  identity technically has Owner. Do not instruct the workload pipeline to create or
+  modify such resources — raise a platform request instead.
+
 ### Secrets, keys, certificates
 - Store secrets in Key Vault (platform or workload per contract). Note CMK
   requirements and who owns key rotation.
