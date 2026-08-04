@@ -40,6 +40,8 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Added App Service networking and subscription-vending sources to
   `references/official-source-map.md`.
 - Added a "Platform-team customization and subscription vending" section to the README.
+- Marked `main` as development toward the next release: skill `metadata.version` is
+  now `0.2.0-dev` (the `v0.1.0` tag and release remain at `0.1.0`).
 
 ## [0.1.0] - 2026-08-04
 
