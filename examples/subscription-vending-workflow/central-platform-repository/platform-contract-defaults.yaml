@@ -1,0 +1,47 @@
+# FICTIONAL organization-wide platform contract defaults.
+# Source of truth maintained by the platform team. Product lines and per-subscription
+# vending outputs override or extend these values when a workload contract is rendered.
+# Not an official Microsoft schema. No secrets.
+
+apiVersion: workload-integration/v1
+kind: PlatformContractDefaults
+
+metadata:
+  platformOwner: Cloud Platform Team
+  supportChannel: platform-requests@contoso.example
+  # contractVersion / generatedAt / sourceRevision are stamped at render time.
+
+governance:
+  allowedRegions: [westeurope, northeurope]
+  requiredTags: [costCenter, owner, dataClassification]
+  inheritedPolicyOutcomes:
+    - "Deny: public network access for PaaS"
+    - "DeployIfNotExists: diagnostic settings to central Log Analytics"
+    - "Modify: append required tags"
+  exemptionProcess: "Request via platform queue; scoped + time-bound; last resort."
+
+privateDns:
+  integrationMechanism: policy-dine
+  centralZones:
+    - privatelink.azurewebsites.net
+    - privatelink.database.windows.net
+    - privatelink.blob.core.windows.net
+    - privatelink.vaultcore.azure.net
+  workloadPermissions: "Reference approved zone groups; do not create central zones."
+
+identity:
+  workloadRoleAssignmentPermissions: "Workload resource groups only; no MG/subscription-scope grants."
+  sharedServiceAccessProcess: "Request cross-subscription roles via platform queue."
+
+monitoring:
+  centralWorkspace: law-corp-central
+  diagnosticSettingsMechanism: policy-dine
+  alertOwnership: workload-team
+
+security:
+  defenderConfiguration: "Defender for Cloud plans enabled by platform."
+  publicNetworkAccessPolicy: "Denied for PaaS."
+
+operations:
+  platformSupport: platform-requests@contoso.example
+  requestSla: "5 business days"

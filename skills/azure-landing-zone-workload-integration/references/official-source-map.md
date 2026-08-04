@@ -9,13 +9,23 @@ needed source cannot be verified.
 - Design principles (policy-driven governance, subscription democratization): https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-principles
 - Design areas: https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-areas
 - Deploy landing zones (application landing zone architectures): https://learn.microsoft.com/azure/architecture/landing-zones/landing-zone-deploy
-- Subscription vending: https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-area/subscription-vending
 
 ## Networking and private DNS
 - Private Link and DNS integration at scale (platform-team vs application-owner responsibilities): https://learn.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/private-link-and-dns-integration-at-scale
 - Private endpoint DNS: https://learn.microsoft.com/azure/private-link/private-endpoint-dns
 - Private endpoint DNS integration scenarios: https://learn.microsoft.com/azure/private-link/private-endpoint-dns-integration
 - Azure Private DNS zones: https://learn.microsoft.com/azure/dns/private-dns-privatednszone
+- Private endpoint fails in a delegated subnet (must use a non-delegated subnet): https://learn.microsoft.com/troubleshoot/azure/private-link/troubleshoot-private-endpoint-creation-failed
+
+## App Service networking
+- App Service regional VNet integration (outbound; dedicated subnet delegated to Microsoft.Web/serverFarms): https://learn.microsoft.com/azure/app-service/overview-vnet-integration
+- Enable/configure VNet integration: https://learn.microsoft.com/azure/app-service/configure-vnet-integration-enable
+- App Service private endpoint (inbound): https://learn.microsoft.com/azure/app-service/overview-private-endpoint
+
+## Subscription vending
+- Subscription vending (design area): https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-area/subscription-vending
+- Subscription vending product lines: https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-area/subscription-vending-product-lines
+- Subscription vending (reference implementation): https://learn.microsoft.com/azure/architecture/landing-zones/subscription-vending
 
 ## Policy and governance
 - Policy effects: https://learn.microsoft.com/azure/governance/policy/concepts/effect-basics

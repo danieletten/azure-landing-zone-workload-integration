@@ -39,3 +39,63 @@ The skill must:
 5. Distinguish confirmed facts from assumptions.
 6. Separate workload team actions from platform team requests.
 7. Route out-of-scope requests to the correct existing skill.
+
+## Platform-contract-aware scenarios
+
+These exercise the `.azure-platform/platform-contract.yaml` overlay model. Use the
+fictional `examples/subscription-vending-workflow/` contract as input.
+
+1. **Valid contract supplies all facts** — a complete contract is present; the skill
+   uses it and does not re-ask answered questions.
+2. **Contract absent** — no `.azure-platform/platform-contract.yaml`; the skill says
+   so, runs in degraded discovery mode, and marks missing facts as assumptions.
+3. **Contract conflicts with IaC** — contract says central-firewall egress but IaC
+   deploys a NAT gateway; the skill flags possible drift and names the conflicting
+   values.
+4. **Contract old / no provenance** — missing `contractVersion`/`generatedAt`; the
+   skill proceeds but flags low confidence and recommends regeneration.
+5. **Provider already registered** — a provider is in `resourceProviders.registered`;
+   the skill does not raise a provider request.
+6. **Provider requires a request** — a needed provider is in `requestRequired`; the
+   skill raises exactly one provider request.
+7. **Private DNS automated** — `integrationMechanism: policy-dine` for the needed
+   zones; the skill raises no DNS request.
+8. **Private DNS needs a request** — mechanism is `platform-request` for a zone; the
+   skill raises a DNS request.
+9. **Subnets already provisioned** — the contract lists the App Service integration
+   and private-endpoint subnets; the skill uses them and requests no subnet change.
+10. **Forbidden central change** — the workload asks for a central-platform change
+    the contract forbids; the skill refuses to make it and routes it as a platform
+    request instead.
+
+## Contract-aware behavioral assertions
+
+The skill must:
+
+1. Not repeat questions the contract already answers.
+2. Not create unnecessary platform requests (already registered/automated/permitted).
+3. Flag contract drift instead of silently choosing a value.
+4. Distinguish workload requirements from platform facts.
+5. Correctly separate App Service **integration** (delegated, outbound) and
+   **private endpoint** (non-delegated, inbound) subnets.
+6. Never treat central platform values as universal Microsoft defaults.
+
+## Execution status (Unreleased changes)
+
+Genuinely executed on 2026-08-04 with GitHub Copilot CLI `1.0.78` against the
+current working-tree skill, using the fictional
+`examples/subscription-vending-workflow/` contract as input:
+
+- **Contract present** (covers C1, C5, C7, C9 + contract-aware assertions 1, 2, 4,
+  5): the skill read `.azure-platform/platform-contract.yaml`, used the provisioned
+  subnets, raised **only** the firewall egress request, and explicitly raised **no**
+  request for providers, subnets, private DNS, diagnostics, or tags. **Pass.**
+- **Contract absent** (covers C2 + assertions 5, 6): the skill searched for the
+  contract, reported "no platform contract is present … degraded-mode review", did
+  not invent regions/tags/DNS/policies (listed them as items to confirm), and kept
+  the App Service integration subnet (delegated) separate from the private-endpoint
+  subnet (non-delegated). **Pass.**
+
+Not yet executed (documented for future runs; do not assume passing): C3 (drift),
+C4 (stale/no provenance), C6 (provider request required), C8 (DNS request required),
+C10 (forbidden central change).

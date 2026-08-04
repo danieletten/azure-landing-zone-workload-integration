@@ -2,7 +2,11 @@
 
 > Produce one request per platform dependency. Keep each request explicit,
 > least-privilege, and testable. Only request what the workload team cannot
-> compliantly do itself.
+> compliantly do itself — and not what the platform contract already reports as
+> registered, automated, or workload-permitted.
+
+## Request identifier
+<Short ID for tracking, e.g. REQ-orders-001.>
 
 ## Requested capability or change
 <Single, specific change. For firewall rules include source, destination, port,
@@ -14,6 +18,13 @@ zone and record.>
 
 ## Technical justification
 <What breaks without it; the technical detail.>
+
+## Existing automated path checked
+<Confirm the platform contract does not already cover this (e.g. DNS is not
+`policy-dine` for this zone; provider is not already `registered`).>
+
+## Platform request channel / owner
+<From the contract: `supportChannel` / `platformOwner`.>
 
 ## Affected subscription and environment
 - Subscription (name / ID):
