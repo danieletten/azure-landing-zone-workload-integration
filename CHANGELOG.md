@@ -18,8 +18,9 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `.azure-platform/platform-contract.yaml` and `platform-guidance.md`).
 - Completed assessment example `examples/completed-workload-integration-assessment.md`.
 - Platform-team request examples under `examples/platform-team-requests/`
-  (firewall egress — required by the primary scenario; private DNS and shared-service
-  role — illustrative alternatives).
+  (firewall egress — required by the primary scenario; shared-service private
+  endpoint approval and network address-space/subnet allocation — illustrative
+  alternatives).
 - Contract-aware evaluation scenarios and behavioral assertions in
   `docs/evaluation-scenarios.md`, with an honest execution log of the two genuinely
   run cases (contract present / absent).
@@ -48,6 +49,20 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   clean-room end-to-end journey — all passed (6/6). Added a reproducible test harness
   and fictional fixtures under `docs/testing/` and results in
   `docs/evaluation-results-v0.2-dev.md`. No skill behavior changes were required.
+- Pre-release example cleanup: replaced two atypical platform-request showcases —
+  removed the manual private DNS integration example (central DNS is normally
+  automated via the `Deploy-Private-DNS-Zones` policy or equivalent) and the
+  shared-service UAMI role-assignment example — with a shared-service private
+  endpoint approval example and a network address-space/subnet allocation example.
+  `platform-request` / hybrid private DNS support, the C8 scenario and fixture, and
+  shared-service access guidance are retained.
+- Distinguished human vs deployment-identity permissions: added an optional
+  `subscription.deploymentIdentityRole` field to the platform-contract template and
+  a decision rule clarifying that when the CI/CD identity is Owner at
+  workload-subscription scope, workload resources, UAMIs, and workload-scope role
+  assignments are pipeline actions (not platform requests), while cross-subscription
+  and central changes remain platform requests. Added targeted evaluation C11
+  (executed 2026-08-04, **Pass**).
 
 ## [0.1.0] - 2026-08-04
 

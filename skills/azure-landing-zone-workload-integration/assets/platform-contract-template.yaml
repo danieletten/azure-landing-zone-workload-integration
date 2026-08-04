@@ -27,7 +27,13 @@ subscription:
   id:                   # subscription GUID (identifier only; not a secret)
   environment:          # dev | test | prod | ...
   managementGroup:      # placement in the MG hierarchy
-  workloadTeamRole:     # e.g. "Contributor" (do NOT assume Owner)
+  workloadTeamRole:     # normal human/interactive team access (do NOT assume Owner)
+  deploymentIdentityRole:   # CI/CD identity role AT WORKLOAD-SUBSCRIPTION SCOPE only
+  # Neither role grants access to platform-owned resources in another subscription.
+  # State org-specific role conditions / custom-role restrictions here rather than
+  # inferring them. If deploymentIdentityRole is Owner at workload-subscription
+  # scope, normal workload resources, UAMIs, and workload-scope role assignments are
+  # pipeline actions, not platform requests.
 
 resourceProviders:
   registered: []        # providers already registered during vending

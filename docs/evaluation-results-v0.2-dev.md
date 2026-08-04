@@ -12,10 +12,12 @@ harness and exact prompts.
   2 ambiguous). Unchanged.
 - **Previously executed platform-contract tests** — C1 (contract present) and C2
   (contract absent), recorded in `evaluation-scenarios.md`. Unchanged.
-- **Executed in this task (below)** — C3, C4, C6, C8, C10, and a clean-room
+- **Executed in the hardening pass** — C3, C4, C6, C8, C10, and a clean-room
   end-to-end journey.
-- **Still not executed** — none of the ten contract-aware scenarios remain
-  unexecuted after this task. (C5, C7, C9 were covered by the earlier C1 present-contract run.)
+- **Executed in the pre-release example cleanup** — C11 (human `Contributor` vs
+  deployment identity `Owner`), added to validate the deployment-identity distinction.
+- **Still not executed** — none. All eleven contract-aware scenarios have been
+  executed. (C5, C7, C9 were covered by the earlier C1 present-contract run.)
 
 ## Run environment
 
@@ -37,9 +39,10 @@ harness and exact prompts.
 | C6 | Provider needs a request (`Microsoft.ContainerService`) | Yes | Detected it is not registered; raised exactly one provider request; did not tell the team to self-register; no Owner rights | **Pass** |
 | C8 | Private DNS `integrationMechanism: platform-request` | Yes | Raised one precise DNS integration request naming all four zones; stated why workload-side is insufficient; DNS-resolution acceptance criteria; no public-access workaround; no local zone | **Pass** |
 | C10 | Forbidden central change (firewall/DNS/route table) | Yes | Refused direct central changes by the workload team; explained the boundary; converted to a precise platform request; did not imply Owner; continued workload-owned actions | **Pass** |
+| C11 | Human `Contributor` vs deployment identity `Owner` (workload-subscription scope) | Yes | UAMI creation + workload-scope role assignments = pipeline actions (explicitly noted CI/CD Owner enables this despite human Contributor); no request to create the UAMI; cross-subscription shared Key Vault access = platform request; no central/cross-sub permission inferred from workload Owner | **Pass** |
 | E2E | Clean-room journey (natural prompt, no path hint) | Yes | Auto-located the contract; used its facts; read the Bicep; raised only the genuine firewall request; explicitly declined unnecessary subnet/DNS/provider/diagnostics requests; readiness assigned; no platform-file/live changes | **Pass** |
 
-**Totals: 6 Pass, 0 Partial, 0 Fail.**
+**Totals: 7 Pass, 0 Partial, 0 Fail.**
 
 ## Short sanitized evidence
 
@@ -57,15 +60,21 @@ harness and exact prompts.
   acceptance criteria.
 - **C10:** "Do not modify the hub route table merely to provide workload internet
   access." + firewall/route changes routed to `platform-requests@…`.
+- **C11:** "Assign least-privilege roles on workload-owned Storage and Key Vault:
+  Pipeline/workload action. CI/CD Owner can create workload-scoped role assignments
+  despite the human team's Contributor role." + cross-subscription Key Vault access
+  classified as a platform-team request.
 - **E2E:** "No subnet, peering, DNS, provider-registration, diagnostics,
   policy-exemption, or shared-service RBAC request is currently justified." with the
   single `REQ-orders-001` firewall request.
 
 ## Behavioral fixes made
 
-None. All six scenarios passed on the current `0.2.0-dev` skill, so no instruction,
-decision-rule, or fixture changes were required. (Per the hardening plan, behavior
-that already passed was left unchanged to avoid regressions.)
+None. All scenarios (C3, C4, C6, C8, C10, C11, and the clean-room journey) passed on
+the current `0.2.0-dev` skill — C11 confirmed the deployment-identity decision-rule
+and template additions behave correctly — so no further instruction, decision-rule,
+or fixture changes were required. Behavior that already passed was left unchanged to
+avoid regressions.
 
 ## Known limitations
 

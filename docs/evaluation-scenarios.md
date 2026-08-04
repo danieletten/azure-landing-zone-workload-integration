@@ -67,6 +67,13 @@ fictional `examples/subscription-vending-workflow/` contract as input.
 10. **Forbidden central change** — the workload asks for a central-platform change
     the contract forbids; the skill refuses to make it and routes it as a platform
     request instead.
+11. **Human vs deployment identity** — the contract sets `workloadTeamRole:
+    Contributor` and `deploymentIdentityRole: Owner` (workload-subscription scope).
+    Deploying a UAMI and assigning least-privilege roles on workload-owned resources
+    are pipeline actions (no platform request to create/configure the UAMI), while
+    access to a platform-owned resource in another subscription remains a platform
+    request. The skill must not infer central/cross-subscription permissions from
+    workload-subscription Owner.
 
 ## Contract-aware behavioral assertions
 

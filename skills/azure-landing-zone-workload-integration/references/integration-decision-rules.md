@@ -46,6 +46,15 @@ is not a full Well-Architected review.
 - Grant the least-privilege built-in role at the narrowest scope. The workload
   team assigns roles on its **own** resources; access to shared platform services
   is requested, not self-granted. No management-group or tenant-scope grants.
+- Distinguish the **human** team role (`subscription.workloadTeamRole`) from the
+  **CI/CD deployment identity** (`subscription.deploymentIdentityRole`). When the
+  contract states the deployment identity is Owner at **workload-subscription
+  scope**, creating workload resources and UAMIs and assigning workload-scope roles
+  are **pipeline actions, not platform requests**. Neither role grants access to
+  platform-owned resources in another subscription — cross-subscription and central
+  changes remain platform requests. Do not infer central or cross-subscription
+  permissions from workload-subscription Owner, and do not universally assume Owner
+  when the contract does not state it.
 
 ### Secrets, keys, certificates
 - Store secrets in Key Vault (platform or workload per contract). Note CMK
