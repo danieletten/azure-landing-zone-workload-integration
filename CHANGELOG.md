@@ -6,6 +6,13 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-04
+
+Platform-contract integration workflow, subscription-vending example, responsibility
+and permission model, representative platform-request examples, all eleven
+contract-aware scenarios, and the clean-room end-to-end evaluation — all executed and
+passing (see `docs/evaluation-results-v0.2.md`).
+
 ### Added
 - Platform contract overlay model: generic template
   `skills/azure-landing-zone-workload-integration/assets/platform-contract-template.yaml`
@@ -22,8 +29,9 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   endpoint approval and network address-space/subnet allocation — illustrative
   alternatives).
 - Contract-aware evaluation scenarios and behavioral assertions in
-  `docs/evaluation-scenarios.md`, with an honest execution log of the two genuinely
-  run cases (contract present / absent).
+  `docs/evaluation-scenarios.md`. All eleven contract-aware scenarios and the
+  clean-room end-to-end journey were genuinely executed and passed; results are in
+  `docs/evaluation-results-v0.2.md` with a reproducible harness under `docs/testing/`.
 
 ### Changed
 - Rewrote `examples/app-service-platform-integration.md` around a realistic
@@ -38,17 +46,17 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Extended the assessment and platform-request templates with platform-contract
   source/version/product-line, drift status, request identifier, existing-automated-path
   check, and request-channel fields.
-- Added App Service networking and subscription-vending sources to
-  `references/official-source-map.md`.
+- Added App Service networking, Container Apps networking, subscription-vending, and
+  Azure Container Registry Private Link sources to `references/official-source-map.md`.
 - Added a "Platform-team customization and subscription vending" section to the README.
-- Marked `main` as development toward the next release: skill `metadata.version` is
-  now `0.2.0-dev` (the `v0.1.0` tag and release remain at `0.1.0`).
-- Validated the platform-contract workflow with genuine Copilot CLI runs: contract
-  vs IaC conflict (C3), stale/unprovenanced contract (C4), provider request required
-  (C6), private DNS request required (C8), forbidden central change (C10), and a
-  clean-room end-to-end journey — all passed (6/6). Added a reproducible test harness
-  and fictional fixtures under `docs/testing/` and results in
-  `docs/evaluation-results-v0.2-dev.md`. No skill behavior changes were required.
+- Set skill `metadata.version` to `0.2.0` (the `v0.1.0` tag and release remain at `0.1.0`).
+- Validated the platform-contract workflow with genuine Copilot CLI runs during a
+  hardening pass: contract vs IaC conflict (C3), stale/unprovenanced contract (C4),
+  provider request required (C6), private DNS request required (C8), forbidden central
+  change (C10), and a clean-room end-to-end journey — all passed. Added a reproducible
+  test harness and fictional fixtures under `docs/testing/` and results in
+  `docs/evaluation-results-v0.2.md`. (The earlier contract present/absent cases C1/C2
+  were run first; see the results document for the full per-pass lineage.)
 - Pre-release example cleanup: replaced two atypical platform-request showcases —
   removed the manual private DNS integration example (central DNS is normally
   automated via the `Deploy-Private-DNS-Zones` policy or equivalent) and the
@@ -63,11 +71,11 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   assignments are pipeline actions (not platform requests), while cross-subscription
   and central changes remain platform requests. Added targeted evaluation C11
   (executed 2026-08-04, **Pass**).
-- Pre-`v0.2.0` technical clarifications: qualified the shared-service private endpoint
-  approval example (manual approval is needed only because the deployment identity has
-  no RBAC on the platform-owned target — connections can auto-approve otherwise);
-  sharpened the network address-space example to an Azure Container Apps **workload
-  profiles environment** subnet (`/27` minimum, delegated to `Microsoft.App/environments`,
+- Technical clarifications: qualified the shared-service private endpoint approval
+  example (manual approval is needed only because the deployment identity has no RBAC
+  on the platform-owned target — connections can auto-approve otherwise); sharpened the
+  network address-space example to an Azure Container Apps **workload profiles
+  environment** subnet (`/27` minimum, delegated to `Microsoft.App/environments`,
   dedicated, with no private endpoints in the infrastructure subnet); and added a
   permission-vs-ownership decision rule (RBAC ≠ authorization; `deploymentIdentityRole:
   Owner` does not override `managedBy: platform` or `workloadMayCreateSubnets: false`).
@@ -101,5 +109,6 @@ First public community preview.
 - Routing/behavioral evaluation executed on 2026-08-04; see
   `docs/evaluation-results-v0.1.md` (6/6 positive triggers, 2/2 negative routing).
 
-[Unreleased]: https://github.com/danieletten/azure-landing-zone-workload-integration/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/danieletten/azure-landing-zone-workload-integration/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/danieletten/azure-landing-zone-workload-integration/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/danieletten/azure-landing-zone-workload-integration/releases/tag/v0.1.0
