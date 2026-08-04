@@ -61,10 +61,11 @@ harness and exact prompts.
   acceptance criteria.
 - **C10:** "Do not modify the hub route table merely to provide workload internet
   access." + firewall/route changes routed to `platform-requests@…`.
-- **C11 (three cases):** "1. Pipeline/workload action — CI/CD Owner can deploy the
+- **C11 (three cases):** "
+  1. Pipeline/workload action — CI/CD Owner can deploy the
   managed identity and assign least-privilege roles on workload-owned resources.
-  2. Platform-team request — the VNet is platform-managed and the contract explicitly
-  prohibits workload-created subnets. 3. Platform-team request — access to a shared
+  2. Platform-team request — The existing network components are platform-managed and the contract explicitly prohibits workload-created subnets. 
+  3. Platform-team request — access to a shared
   Key Vault in another subscription requires the platform team to authorize and grant
   cross-subscription access."
 - **E2E:** "No subnet, peering, DNS, provider-registration, diagnostics,
