@@ -83,6 +83,10 @@ By default `gh skill` installs at **project scope** for GitHub Copilot. Use
 `--scope user` to install everywhere, or `--agent <name>` for another supported
 agent (see `gh skill install --help`).
 
+> The `main` branch contains unreleased development toward `v0.2.0`. For the stable
+> public preview, install the pinned `v0.1.0` release.
+
+
 **Manual fallback (copy the folder):** clone this repository and either install
 from local —
 
