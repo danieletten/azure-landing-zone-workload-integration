@@ -101,13 +101,15 @@ is not a full Well-Architected review.
 
 ## Reviewing workload IaC
 
-Flag platform-incompatible assumptions: subscription Owner access; creating role
+Flag platform-incompatible assumptions: assuming human or deployment-identity Owner
+access when the platform contract does not explicitly grant it; creating role
 assignments outside own resources; creating/modifying VNets; modifying central
 private DNS zones, firewall rules, or route tables; relying on public network
 access; owning management-group or policy assignments; duplicating central services
 inside the workload subscription; omitting required diagnostic settings or tags; and
 hard-coded enterprise configuration that should be an input or platform-contract
-value.
+value. (Even explicitly granted deployment Owner does not override `managedBy:
+platform` or `workloadMayCreateSubnets: false` — see Permission vs ownership above.)
 
 Do not rewrite all infrastructure unless the user requests implementation. Prefer
 Bicep and Azure Verified Modules in new Azure-only examples; stay usable for

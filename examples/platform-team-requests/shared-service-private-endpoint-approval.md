@@ -38,10 +38,13 @@ the required approval permission on `acrsharedplatform` approves it.
 
 > This is scenario-specific, **not** a universal rule. A cross-subscription private
 > endpoint connection can be **auto-approved** when the requesting principal already
-> has sufficient permissions on the target resource (e.g.
-> `Microsoft.Network/privateEndpointConnections` approve rights), or when the
-> target's approval configuration permits it. A manual request is needed here only
-> because the deployment identity has no rights on the platform-owned registry.
+> has **sufficient service-specific ACR management-plane permission on the target
+> registry to approve private endpoint connections**, or when the target's approval
+> configuration permits it. That permission is associated with the
+> `Microsoft.ContainerRegistry/registries/privateEndpointConnections` operations on
+> the registry (verify the exact operation and role against the current ACR provider
+> operations before relying on a specific string). A manual request is needed here
+> only because the deployment identity has no rights on the platform-owned registry.
 
 ## Existing automated path checked
 Confirmed: **Private DNS integration is already automated** by Azure Policy
@@ -81,9 +84,13 @@ T. Lead, Contoso Orders.
 
 ## Validation and acceptance criteria
 - The private endpoint connection state on `acrsharedplatform` is `Approved`.
-- `acrsharedplatform.azurecr.io` resolves to the private IP from `snet-private-endpoints`.
-- The workload can pull images privately.
+- Both registry FQDNs resolve to private IPs from `snet-private-endpoints` (a
+  geo-replicated/premium registry uses a separate data endpoint):
+  - `acrsharedplatform.azurecr.io` (registry/login endpoint)
+  - `acrsharedplatform.westeurope.data.azurecr.io` (West Europe data endpoint)
+- The workload can authenticate and pull an image through the private endpoint.
 - Public network access on the registry is not enabled.
+- DNS remains automated by policy — no manual private DNS request is raised.
 
 ## Rollback or expiry (where applicable)
 When `pe-orders-acr` is removed, the platform team may reject/remove the

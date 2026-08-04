@@ -26,6 +26,12 @@ needed source cannot be verified.
 - Container Apps VNet configuration (workload profiles environment subnet: `/27` or larger, delegated to `Microsoft.App/environments`): https://learn.microsoft.com/azure/container-apps/networking
 - Provide a virtual network to a Container Apps environment: https://learn.microsoft.com/azure/container-apps/vnet-custom
 
+## Azure Container Registry Private Link
+- ACR private endpoints and DNS configuration: https://learn.microsoft.com/azure/container-registry/container-registry-private-endpoints
+- Manage/approve ACR private endpoint connections: https://learn.microsoft.com/azure/container-registry/container-registry-private-endpoints#manage-private-endpoint-connections
+- Manage a private endpoint connection (approve/reject pending connections): https://learn.microsoft.com/azure/private-link/manage-private-endpoint
+- Troubleshoot: ACR FQDN does not resolve to the private IP: https://learn.microsoft.com/troubleshoot/azure/azure-container-registry/cant-resolve-container-registry-fqdn-private-ip-address
+
 ## Subscription vending
 - Subscription vending (design area): https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-area/subscription-vending
 - Subscription vending product lines: https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-area/subscription-vending-product-lines
