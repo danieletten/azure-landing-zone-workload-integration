@@ -5,6 +5,12 @@
 > concrete integration while criticality, data classification, region/residency,
 > or connectivity are unknown.
 
+## Platform contract
+- Contract source and version (`sourceRepository` @ `sourceRevision`, `contractVersion`):
+- Product line:
+- Contract present / absent (degraded mode?):
+- Drift or conflict status (none / describe conflicting values and sources):
+
 ## Ownership
 - Workload name:
 - Business owner:

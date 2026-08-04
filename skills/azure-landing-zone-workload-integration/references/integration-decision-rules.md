@@ -21,11 +21,24 @@ is not a full Well-Architected review.
 
 ### Private endpoints and private DNS
 - Prefer private endpoints when the platform standard and threat model call for
-  it — do not assume every PaaS service must always use one.
-- Do **not** create `privatelink.*` zones in the workload subscription when
-  central zones exist; use the platform DNS integration mechanism. A private
-  endpoint that will not resolve is usually a missing central A record or zone
-  link, not a reason to enable public access.
+  it — not every PaaS service must always use one.
+- Do **not** create `privatelink.*` zones in the workload subscription when central
+  zones exist. Private endpoint DNS is **contract-driven** — check
+  `privateDns.integrationMechanism`: `policy-dine` (auto-associated via Azure Policy
+  + zone groups), `workload-iac-zonegroup` (workload references a permitted zone
+  group), `platform-request`, or `hybrid`. Only raise a DNS request when the
+  mechanism requires one; do not invent one when integration is automated. Do not
+  confuse VM private DNS autoregistration with private endpoint DNS zone integration.
+- A private endpoint that will not resolve is usually a missing zone group/record or
+  unlinked zone, not a reason to enable public access.
+
+### App Service networking (when in scope)
+- Keep inbound and outbound separate. **Regional VNet Integration (outbound)** needs
+  a dedicated subnet delegated to `Microsoft.Web/serverFarms` used by no other
+  service. **Private endpoints** (App Service inbound, SQL, Storage, Key Vault) go in
+  a **separate, non-delegated** subnet — a private endpoint cannot be created in a
+  subnet delegated to `Microsoft.Web/serverFarms`. Route outbound through central
+  egress when the contract requires it.
 
 ### Workload identities and RBAC
 - Prefer managed identities over keys/secrets. Prefer user-assigned identities
@@ -40,6 +53,13 @@ is not a full Well-Architected review.
 
 ### Shared platform services
 - Consume shared services rather than duplicating them; justify any duplication.
+
+### Resource providers
+- Check the contract's `resourceProviders` before acting. Three states:
+  `registered` (already done during vending — do **not** request or re-register),
+  `workloadMayRegister` (the workload team registers it itself), and
+  `requestRequired` (raise a platform request). Do not tell the workload team to
+  request a provider the contract already reports as registered.
 
 ### Monitoring, logging, incident ownership
 - Send platform-required logs/metrics to the mandated central workspace; confirm
@@ -61,23 +81,17 @@ is not a full Well-Architected review.
 
 ## Reviewing workload IaC
 
-Flag assumptions such as:
+Flag platform-incompatible assumptions: subscription Owner access; creating role
+assignments outside own resources; creating/modifying VNets; modifying central
+private DNS zones, firewall rules, or route tables; relying on public network
+access; owning management-group or policy assignments; duplicating central services
+inside the workload subscription; omitting required diagnostic settings or tags; and
+hard-coded enterprise configuration that should be an input or platform-contract
+value.
 
-1. Subscription Owner access.
-2. Permission to create role assignments.
-3. Permission to create/modify virtual networks.
-4. Permission to modify centralized private DNS zones.
-5. Permission to modify firewall rules or route tables.
-6. Public network access being available.
-7. Workload team owning management group or policy assignments.
-8. Central services duplicated inside the workload subscription.
-9. Required diagnostic settings or tags omitted.
-10. Hard-coded enterprise configuration that should be an input or platform
-    contract value.
-
-Do not rewrite all infrastructure unless the user requests implementation.
-Prefer Bicep and Azure Verified Modules in new Azure-only examples; stay usable
-for Terraform.
+Do not rewrite all infrastructure unless the user requests implementation. Prefer
+Bicep and Azure Verified Modules in new Azure-only examples; stay usable for
+Terraform.
 
 ## Expected output
 

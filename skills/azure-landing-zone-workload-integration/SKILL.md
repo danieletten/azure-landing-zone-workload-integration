@@ -48,9 +48,14 @@ resources or deploy without explicit authorization.
    [`assets/workload-integration-assessment.md`](assets/workload-integration-assessment.md).
    If the user is still selecting Azure services from an app idea, hand off to
    `azure-app-onboard`.
-2. **Discover the platform contract and split responsibilities** — follow
+2. **Discover the platform contract and split responsibilities** — read the
+   organization overlay `.azure-platform/platform-contract.yaml` first if present,
+   following [`references/platform-contract.md`](references/platform-contract.md)
+   for source precedence, provenance, and drift handling; then
    [`references/discovery-and-responsibilities.md`](references/discovery-and-responsibilities.md).
-   Use read-only Azure discovery only with explicit permission.
+   If no contract is present, say so and operate in degraded discovery mode rather
+   than inventing platform values. Use read-only Azure discovery only with explicit
+   permission.
 3. **Assess relevant integration domains** and **review workload IaC** — apply
    [`references/integration-decision-rules.md`](references/integration-decision-rules.md).
    Do not rewrite infrastructure unless implementation is requested.

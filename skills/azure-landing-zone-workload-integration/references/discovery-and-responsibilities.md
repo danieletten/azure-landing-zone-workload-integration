@@ -20,7 +20,12 @@ If the user is still choosing Azure services from an app idea, hand off to
 
 ## Discover the platform contract
 
-Search the repository and user-supplied documentation first. Use read-only Azure
+Look for the organization overlay `.azure-platform/platform-contract.yaml` first;
+if present, treat it as the primary source of platform facts and follow
+[platform-contract.md](platform-contract.md) for precedence, provenance, and drift.
+If absent, say so and use degraded discovery mode.
+
+Then search the repository and user-supplied documentation. Use read-only Azure
 discovery capabilities **only with explicit permission**. Discovery areas:
 
 - Subscription and management group placement.

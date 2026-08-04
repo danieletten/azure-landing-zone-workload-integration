@@ -1,0 +1,79 @@
+# Generic platform contract template for the azure-landing-zone-workload-integration skill.
+#
+# This is NOT an official Microsoft schema. It is a project-specific, human- and
+# agent-readable format that a platform team's subscription-vending process can
+# render into each workload repository at `.azure-platform/platform-contract.yaml`.
+#
+# Rules:
+# - Fill only fields that improve workload integration decisions; omit the rest.
+# - Never put secrets, tokens, private keys, certificates, or credentials here.
+# - For dynamic data, include `generatedAt` provenance rather than a live inventory.
+# - Values below are placeholders/comments, not defaults. Replace them per organization.
+
+apiVersion: workload-integration/v1        # format version of THIS template
+kind: PlatformContract
+
+metadata:
+  contractVersion:      # e.g. "1.4.0" — semantic version of this rendered contract
+  generatedAt:          # ISO 8601 timestamp, e.g. "2026-08-04T09:00:00Z"
+  sourceRepository:     # platform repo that generated this contract
+  sourceRevision:       # commit SHA / tag of the platform source
+  productLine:          # vending archetype, e.g. "corp-connected-online"
+  platformOwner:        # owning team (name or group), not an individual
+  supportChannel:       # where to raise platform requests (queue/URL/team)
+
+subscription:
+  name:
+  id:                   # subscription GUID (identifier only; not a secret)
+  environment:          # dev | test | prod | ...
+  managementGroup:      # placement in the MG hierarchy
+  workloadTeamRole:     # e.g. "Contributor" (do NOT assume Owner)
+
+resourceProviders:
+  registered: []        # providers already registered during vending
+  workloadMayRegister: []   # providers the workload team is permitted to register
+  requestRequired: []   # providers that require a platform request
+
+governance:
+  allowedRegions: []
+  requiredTags: []      # tag keys the workload must set
+  inheritedPolicyOutcomes: []   # notable Deny/Modify/DINE effects the workload will hit
+  exemptionProcess:     # how/where to request an exemption (last resort)
+
+networking:
+  virtualNetwork:       # name / address space provisioned for the workload
+  subnets: []           # list of { name, purpose, delegation, managedBy }
+  egress:               # e.g. "central Azure Firewall (forced tunnel)"
+  workloadMayCreateSubnets:   # true | false
+  requestProcess:       # how to request peering / address space / rules
+
+privateDns:
+  centralZones: []      # privatelink zones the platform manages
+  integrationMechanism: # policy-dine | workload-iac-zonegroup | platform-request | hybrid
+  supportedServices: [] # services whose PE DNS is auto-integrated
+  workloadPermissions:  # what the workload may do (e.g. reference approved zone groups)
+  requestProcess:       # only used when integrationMechanism requires a request
+
+identity:
+  workloadRoleAssignmentPermissions:   # scope where the workload may assign roles
+  sharedServiceAccessProcess:          # how to request access to shared services
+
+monitoring:
+  centralWorkspace:     # mandated Log Analytics workspace (name/id), if any
+  diagnosticSettingsMechanism:   # policy-dine | workload-iac | platform
+  alertOwnership:       # who owns workload alerts
+
+security:
+  defenderConfiguration:        # inherited Defender plans, if relevant
+  publicNetworkAccessPolicy:    # e.g. "denied for PaaS"
+  dataClassificationRequirements:   # controls tied to classification (e.g. CMK for Confidential)
+
+cost:
+  budgetOwner:
+  costCenter:
+  requiredTags: []
+
+operations:
+  incidentOwner:
+  platformSupport:      # support contact/queue
+  requestSla:           # expected turnaround for platform requests

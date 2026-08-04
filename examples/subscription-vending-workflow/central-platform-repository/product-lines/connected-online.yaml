@@ -1,0 +1,42 @@
+# FICTIONAL product-line overrides for the "corp connected, online" archetype.
+# Layered on top of platform-contract-defaults.yaml at render time.
+# Not an official Microsoft schema. No secrets.
+
+apiVersion: workload-integration/v1
+kind: PlatformContractProductLine
+
+metadata:
+  productLine: corp-connected-online
+
+# This product line vends a virtual network peered to the regional hub and forces
+# egress through the central firewall. Providers commonly needed by web workloads
+# are pre-registered during vending.
+resourceProviders:
+  registered:
+    - Microsoft.Web
+    - Microsoft.Sql
+    - Microsoft.Storage
+    - Microsoft.KeyVault
+    - Microsoft.Network
+  workloadMayRegister:
+    - Microsoft.Insights
+  requestRequired:
+    - Microsoft.ContainerService   # AKS not part of this product line by default
+
+networking:
+  egress: "Central Azure Firewall (forced tunnel)."
+  workloadMayCreateSubnets: false
+  requestProcess: "Peering, address space, and firewall rules via platform queue."
+  # Subnet purposes provisioned for web workloads in this product line:
+  subnetTemplate:
+    - name: snet-appservice-integration
+      purpose: "App Service regional VNet Integration (outbound)."
+      delegation: Microsoft.Web/serverFarms
+      managedBy: platform
+    - name: snet-private-endpoints
+      purpose: "Private endpoints (App Service inbound, SQL, Storage, Key Vault)."
+      delegation: none
+      managedBy: platform
+
+cost:
+  requiredTags: [costCenter, owner, dataClassification]

@@ -6,6 +6,41 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+- Platform contract overlay model: generic template
+  `skills/azure-landing-zone-workload-integration/assets/platform-contract-template.yaml`
+  and a new reference `references/platform-contract.md` (source precedence,
+  provenance, drift handling, degraded mode).
+- Subscription-vending workflow example under
+  `examples/subscription-vending-workflow/` (central platform repository with
+  defaults, a `corp-connected-online` product line, responsibility model, and repo
+  template; plus a generated workload repository with a rendered
+  `.azure-platform/platform-contract.yaml` and `platform-guidance.md`).
+- Completed assessment example `examples/completed-workload-integration-assessment.md`.
+- Platform-team request examples under `examples/platform-team-requests/`
+  (firewall egress — required by the primary scenario; private DNS and shared-service
+  role — illustrative alternatives).
+- Contract-aware evaluation scenarios and behavioral assertions in
+  `docs/evaluation-scenarios.md`, with an honest execution log of the two genuinely
+  run cases (contract present / absent).
+
+### Changed
+- Rewrote `examples/app-service-platform-integration.md` around a realistic
+  post-vending prompt and three stages (request → platform handoff → assessment),
+  with corrected App Service networking (dedicated `Microsoft.Web/serverFarms`
+  integration subnet for outbound vs. a separate non-delegated subnet for private
+  endpoints) and contract-driven (automated) private DNS.
+- Updated `SKILL.md` and references to read `.azure-platform/platform-contract.yaml`
+  first, apply source precedence and drift handling, operate in degraded mode when
+  the contract is absent, make private DNS and resource-provider handling
+  contract-driven, and avoid unnecessary platform requests.
+- Extended the assessment and platform-request templates with platform-contract
+  source/version/product-line, drift status, request identifier, existing-automated-path
+  check, and request-channel fields.
+- Added App Service networking and subscription-vending sources to
+  `references/official-source-map.md`.
+- Added a "Platform-team customization and subscription vending" section to the README.
+
 ## [0.1.0] - 2026-08-04
 
 First public community preview.
