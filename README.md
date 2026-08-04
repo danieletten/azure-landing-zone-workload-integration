@@ -6,7 +6,7 @@ and platform responsibilities.
 
 > Community project — **not** an official Microsoft or GitHub product. All guidance
 > is generic and must be validated against your organization's Azure platform
-> standards. Public preview (`v0.1.0`, in development).
+> standards. Public preview (`v0.2.0`).
 
 ## The problem
 
@@ -43,11 +43,14 @@ A structured integration assessment with clearly separated:
 > Service + Azure SQL + Storage + Key Vault app. Central policy denies public
 > access, DNS and egress are centralized. What's ours vs the platform team's?"
 
-The skill discovers the platform contract, separates responsibilities, and
-returns workload actions (private endpoints, `publicNetworkAccess` disabled,
-managed identity, diagnostics/tags) alongside platform requests (private DNS
-records, a firewall rule, subnet delegation) with a readiness status — without
-assuming Owner rights or enabling public access. See the full worked example in
+The skill discovers the platform contract, separates responsibilities, and returns
+workload/pipeline actions (private endpoints and workload resources, `publicNetworkAccess`
+disabled, managed identity, diagnostics/tags). In the primary scenario the App Service
+integration and private-endpoint subnets are already provisioned, private DNS is
+automated by policy, and required providers are already registered — so the single
+genuine platform dependency is a central firewall egress rule. It assigns a readiness
+status without assuming Owner rights or enabling public access. See the full worked
+example in
 [`examples/app-service-platform-integration.md`](examples/app-service-platform-integration.md).
 
 ## Quick start
@@ -73,18 +76,19 @@ available.
 gh skill install danieletten/azure-landing-zone-workload-integration azure-landing-zone-workload-integration
 ```
 
-**Install a tagged release:**
+**Install a tagged release (recommended for reproducibility):**
 
 ```bash
-gh skill install danieletten/azure-landing-zone-workload-integration azure-landing-zone-workload-integration@v0.1.0
+gh skill install danieletten/azure-landing-zone-workload-integration azure-landing-zone-workload-integration@v0.2.0
 ```
 
 By default `gh skill` installs at **project scope** for GitHub Copilot. Use
 `--scope user` to install everywhere, or `--agent <name>` for another supported
 agent (see `gh skill install --help`).
 
-> The `main` branch contains unreleased development toward `v0.2.0`. For the stable
-> public preview, install the pinned `v0.1.0` release.
+> For reproducible installation, use the pinned `v0.2.0` tag. An unpinned
+> installation follows the repository's current default branch and may change after
+> future development resumes.
 
 
 **Manual fallback (copy the folder):** clone this repository and either install
@@ -152,11 +156,18 @@ command syntax may change while the feature is in preview.
 
 ## Evaluation status
 
-Early. Routing and behavioral scenarios are defined in
-[`docs/evaluation-scenarios.md`](docs/evaluation-scenarios.md), and a manual
-evaluation log is in
-[`docs/evaluation-results-v0.1.md`](docs/evaluation-results-v0.1.md). Only
-scenarios genuinely executed are marked as run; the rest are pending.
+Scenarios and behavioral assertions are defined in
+[`docs/evaluation-scenarios.md`](docs/evaluation-scenarios.md), with a reproducible
+harness under [`docs/testing/`](docs/testing/README.md).
+
+- The original routing evaluation is recorded for `v0.1.0` in
+  [`docs/evaluation-results-v0.1.md`](docs/evaluation-results-v0.1.md).
+- All eleven platform-contract-aware scenarios and the clean-room end-to-end journey
+  have been genuinely executed and passed; results and reproducibility details are in
+  [`docs/evaluation-results-v0.2.md`](docs/evaluation-results-v0.2.md).
+
+These are manual evaluations, not a formal product certification. Model wording may
+vary because the Copilot CLI default model was not pinned.
 
 ## Contributing and feedback
 

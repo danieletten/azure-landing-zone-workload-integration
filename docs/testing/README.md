@@ -50,5 +50,5 @@ to `<OutDir>/<Id>.txt`, prints whether the skill loaded, and deletes the temp di
 - **cleanroom (natural, no path hint):** "We received the production application landing zone subscription and repository for this workload. Review our Bicep design against the platform setup, identify what our team can implement, and create only the platform requests that are actually required."
 
 Recorded outcomes are in
-[`../evaluation-results-v0.2-dev.md`](../evaluation-results-v0.2-dev.md). Raw model
+[`../evaluation-results-v0.2.md`](../evaluation-results-v0.2.md). Raw model
 transcripts are intentionally **not** committed; re-run the harness to reproduce.

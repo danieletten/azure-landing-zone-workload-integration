@@ -1,4 +1,4 @@
-# Evaluation Results — v0.2.0-dev (platform-contract hardening)
+# Evaluation Results — v0.2.0 (platform-contract workflow)
 
 Genuine manual results for the contract-aware scenarios and the clean-room
 end-to-end journey. See [evaluation-scenarios.md](evaluation-scenarios.md) for the
@@ -24,8 +24,9 @@ harness and exact prompts.
 
 - **Host:** GitHub Copilot CLI `1.0.78` (non-interactive, `copilot -p ... --allow-all-tools`).
 - **Model:** Copilot CLI default (not explicitly pinned).
-- **Skill:** current working tree (`0.2.0-dev`), installed per-scenario with
-  `gh skill install <repo> ... --from-local`.
+- **Skill:** the released `0.2.0` skill — identical behavior to the `0.2.0-dev`
+  working tree it was tested from (only the version string changed for release),
+  installed per-scenario with `gh skill install <repo> ... --from-local`.
 - **Competing skills:** the installed Azure plugin skill set was available.
 - **Date:** 2026-08-04.
 - **Pass criterion:** the expected behavior is visible in the answer — not merely
@@ -75,10 +76,10 @@ harness and exact prompts.
 ## Behavioral fixes made
 
 None. All scenarios (C3, C4, C6, C8, C10, C11, and the clean-room journey) passed on
-the current `0.2.0-dev` skill — C11 confirmed the deployment-identity decision-rule
-and template additions behave correctly — so no further instruction, decision-rule,
-or fixture changes were required. Behavior that already passed was left unchanged to
-avoid regressions.
+the `0.2.0` skill (tested from the `0.2.0-dev` working tree; behavior unchanged) —
+C11 confirmed the deployment-identity decision-rule and template additions behave
+correctly — so no further instruction, decision-rule, or fixture changes were
+required. Behavior that already passed was left unchanged to avoid regressions.
 
 ## Known limitations
 

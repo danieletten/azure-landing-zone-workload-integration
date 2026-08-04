@@ -106,11 +106,13 @@ current working-tree skill, using the fictional
   the App Service integration subnet (delegated) separate from the private-endpoint
   subnet (non-delegated). **Pass.**
 
-All ten contract-aware scenarios have now been executed. In addition to the
+All eleven contract-aware scenarios have now been executed. In addition to the
 contract-present and contract-absent runs above (C1, C2, and the C5/C7/C9 behaviors
 covered by the present-contract run), C3 (drift), C4 (stale/no provenance), C6
 (provider request required), C8 (DNS request required), C10 (forbidden central
-change) and a clean-room end-to-end journey were executed on 2026-08-04 with skill
-`0.2.0-dev` and **all passed**. No contract-aware scenarios remain unexecuted. See
-[evaluation-results-v0.2-dev.md](evaluation-results-v0.2-dev.md) and the reproducible
+change), C11 (human vs deployment-identity, three cases) and a clean-room
+end-to-end journey were executed on 2026-08-04 (skill released as `0.2.0`; tested
+from the `0.2.0-dev` working tree, behavior unchanged) and **all passed**. No
+contract-aware scenarios remain unexecuted. See
+[evaluation-results-v0.2.md](evaluation-results-v0.2.md) and the reproducible
 harness in [testing/README.md](testing/README.md).
